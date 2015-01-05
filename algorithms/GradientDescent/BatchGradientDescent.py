@@ -42,7 +42,7 @@ class GradientDescent:
         step = 0
         while (not converge and step < max_iter):
             mse = self.__gradient_step(alpha, step)
-            if abs(previous_mse - mse) < 1e-4:
+            if abs(previous_mse - mse) * 2 < 1e-3:
                 converge = True
             previous_mse = mse
             step += 1
@@ -55,7 +55,7 @@ class GradientDescent:
         """
         y_hat = self.x.dot(self.__beta)
         error = y_hat - self.y
-        self.__mse = 1. / (2 * len(y_hat)) * np.sum(error)
+        self.__mse = 1. / (2 * len(y_hat)) * np.sum(error ** 2)
         gradient = 1. / len(y_hat) * self.x.transpose().dot(error)
         self.__beta -= alpha * gradient
         self.__summary += "Iter: {}, mse: {}, beta: {}\n".format(step, self.__mse * 2, self.__beta)
@@ -85,7 +85,6 @@ def main():
     SLR.summary()
     print "\n"
     print "break_distance = {} + {} * speed".format(beta[0], beta[1])
-    print dir(SLR)
 
 
 if __name__ == "__main__":
